@@ -1,9 +1,15 @@
 const uuid = require('uuid')
 const body = require('koa-body')
 const Router = require('koa-router')
+const jwt = require('jsonwebtoken')
 const validate = require('../middlewares/validate')
 const router = new Router({ prefix: '/users' })
 const { isUsernameTaken } = require('../db')
+
+const {
+  SECRET_KEY,
+  TOKEN_TTL = 24 * 60 * 60 * 1000 // 1 day
+} = process.env
 
 router.post('/', body(), validate(require('../../docs/schemas/user')), context => {
   const { data: { id, attributes: { username } } } = context.request.body
@@ -30,13 +36,16 @@ router.post('/', body(), validate(require('../../docs/schemas/user')), context =
     })
   }
 
+  const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: TOKEN_TTL })
+
   context.status = 201
   context.body = {
     data: {
       type: 'users',
       id: uuid(),
       attributes: {
-        username
+        username,
+        token
       }
     }
   }
