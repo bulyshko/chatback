@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "ajv": "6.10.0",
+    "jsonwebtoken": "8.5.1",
     "koa": "2.7.0",
     "koa-body": "4.1.0",
     "koa-router": "7.4.0",

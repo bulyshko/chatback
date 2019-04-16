@@ -1,8 +1,33 @@
 const WebSocket = require('ws')
-const { takeUsername, releaseUsername } = require('./db')
+const jwt = require('jsonwebtoken')
+const url = require('url')
+const { isUsernameTaken, takeUsername, releaseUsername } = require('./db')
+
+const { SECRET_KEY } = process.env
 
 module.exports = server => {
-  const wss = new WebSocket.Server({ server })
+  const wss = new WebSocket.Server({
+    server,
+    verifyClient: (info, reply) => {
+      const { query: { token } } = url.parse(info.req.url, true)
+      if (!token) {
+        reply(false, 401, 'Unauthorized')
+      } else {
+        jwt.verify(token, SECRET_KEY, (error, {username}) => {
+          if (error) {
+            reply(false, 401, 'Unauthorized')
+          } else {
+            if (isUsernameTaken(username)) {
+              reply(false, 409, 'Conflict')
+            } else {
+              info.req.user = username
+              reply(true)
+            }
+          }
+        })
+      }
+    }
+  })
 
   wss.broadcast = data => {
     wss.clients.forEach(client => {
@@ -13,7 +38,7 @@ module.exports = server => {
   }
 
   wss.on('connection', (client, req) => {
-    const username = '' // TODO
+    const username = req.user.name
 
     takeUsername(username)
 
