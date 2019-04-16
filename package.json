@@ -16,6 +16,7 @@
   "author": "Romuald Bulyshko <opensource@bulyshko.com> (https://bulyshko.com)",
   "license": "MIT",
   "dependencies": {
+    "ajv": "6.10.0",
     "koa": "2.7.0",
     "koa-body": "4.1.0",
     "koa-router": "7.4.0",

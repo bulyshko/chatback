@@ -4,15 +4,29 @@ const Router = require('koa-router')
 const router = new Router({ prefix: '/users' })
 const { isUsernameTaken } = require('../db')
 
-router.post('/', body(), context => {
+router.post('/', body(), validate(require('../../docs/schemas/user')), context => {
   const { data: { id, attributes: { username } } } = context.request.body
 
   if (id !== undefined) {
-    context.throw(403, 'Client-Generated IDs are not allowed')
+    context.throw(403, {
+      errors: [
+        {
+          code: '4403',
+          title: 'Client-Generated IDs are not allowed'
+        }
+      ]
+    })
   }
 
   if (isUsernameTaken(username)) {
-    context.throw(409, 'Username already taken')
+    context.throw(409, {
+      errors: [
+        {
+          code: '4409',
+          title: 'Username already taken'
+        }
+      ]
+    })
   }
 
   context.status = 201
