@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "chatback",
+  "version": "1.0.0",
+  "description": "WebSocket Chat Back-end",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bulyshko/chatback.git"
+  },
+  "author": "Romuald Bulyshko <opensource@bulyshko.com> (https://bulyshko.com)",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "2.7.0"
+  },
+  "devDependencies": {
+    "standard": "12.0.1"
+  }
+}
