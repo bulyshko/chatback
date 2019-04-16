@@ -4,6 +4,7 @@ const { PORT = 1337 } = process.env
 
 const app = new Koa()
 
+app.use(require('./middlewares/ssl'))
 app.use(require('./middlewares/api'))
 
 app.on('error', ({ message }) => console.error(message))
