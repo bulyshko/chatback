@@ -1,8 +1,11 @@
 const Koa = require('koa')
+const favicon = require('koa-favicon')
 
 const { PORT = 1337 } = process.env
 
 const app = new Koa()
+
+app.use(favicon(`${__dirname}/favicon.ico`))
 
 app.use(require('./middlewares/ssl'))
 app.use(require('./middlewares/api'))
