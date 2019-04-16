@@ -1,6 +1,7 @@
 const uuid = require('uuid')
 const body = require('koa-body')
 const Router = require('koa-router')
+const validate = require('../middlewares/validate')
 const router = new Router({ prefix: '/users' })
 const { isUsernameTaken } = require('../db')
 
