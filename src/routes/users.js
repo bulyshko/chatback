@@ -36,8 +36,6 @@ router.post('/', body(), validate(require('../../docs/schemas/user')), context =
     })
   }
 
-  const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: TOKEN_TTL })
-
   context.status = 201
   context.body = {
     data: {
@@ -45,7 +43,7 @@ router.post('/', body(), validate(require('../../docs/schemas/user')), context =
       id: uuid(),
       attributes: {
         username,
-        token
+        token: jwt.sign({ username }, SECRET_KEY, { expiresIn: TOKEN_TTL })
       }
     }
   }

@@ -13,7 +13,7 @@ module.exports = server => {
       if (!token) {
         reply(false, 401, 'Unauthorized')
       } else {
-        jwt.verify(token, SECRET_KEY, (error, {username}) => {
+        jwt.verify(token, SECRET_KEY, (error, { username }) => {
           if (error) {
             reply(false, 401, 'Unauthorized')
           } else {
@@ -38,7 +38,7 @@ module.exports = server => {
   }
 
   wss.on('connection', (client, req) => {
-    const username = req.user.name
+    const username = req.user
 
     takeUsername(username)
 
