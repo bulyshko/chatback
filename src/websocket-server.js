@@ -3,7 +3,12 @@ const jwt = require('jsonwebtoken')
 const url = require('url')
 const { isUsernameTaken, takeUsername, releaseUsername } = require('./db')
 
-const { SECRET_KEY } = process.env
+const {
+  SECRET_KEY,
+  INACTIVITY_TIMEOUT = 60 * 1000 // 1 min
+} = process.env
+
+const INACTIVITY_CODE = 4001
 
 module.exports = server => {
   const wss = new WebSocket.Server({
@@ -29,6 +34,15 @@ module.exports = server => {
     }
   })
 
+  setInterval(function () {
+    const now = Date.now() - INACTIVITY_TIMEOUT
+    wss.clients.forEach(client => {
+      if (client.seen < now) {
+        client.close(INACTIVITY_CODE)
+      }
+    })
+  }, 1000)
+
   wss.broadcast = data => {
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
@@ -44,7 +58,11 @@ module.exports = server => {
 
     wss.broadcast({ type: 'system', text: `${username} joined the chat.` })
 
+    client.seen = Date.now()
+
     client.on('message', message => {
+      client.seen = Date.now()
+
       console.info(`Received message from ${username}.`)
 
       wss.broadcast({ type: 'user', text: JSON.parse(message), username, timestamp: Date.now() })
@@ -53,7 +71,12 @@ module.exports = server => {
     client.on('close', code => {
       releaseUsername(username)
 
-      wss.broadcast({ type: 'system', text: `${username} left the chat, connection lost.` })
+      wss.broadcast({
+        type: 'system',
+        text: code === INACTIVITY_CODE
+          ? `${username} was disconnected due to inactivity.`
+          : `${username} left the chat, connection lost.`
+      })
     })
   })
 
