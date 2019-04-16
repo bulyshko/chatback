@@ -1,9 +1,11 @@
+const uuid = require('uuid')
+const body = require('koa-body')
 const Router = require('koa-router')
 const router = new Router({ prefix: '/users' })
 const { isUsernameTaken } = require('../db')
 
-router.post('/', context => {
-  const username = '' // TODO
+router.post('/', body(), context => {
+  const { data: { attributes: { username } } } = context.request.body
 
   if (isUsernameTaken(username)) {
     context.throw(409, 'Username already taken')
@@ -13,7 +15,7 @@ router.post('/', context => {
   context.body = {
     data: {
       type: 'users',
-      id: '', // TODO
+      id: uuid(),
       attributes: {
         username
       }
