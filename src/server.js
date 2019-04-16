@@ -7,3 +7,5 @@ const app = new Koa()
 const server = app.listen(PORT)
 
 module.exports = server
+
+const wss = require('./websocket-server')(server)
