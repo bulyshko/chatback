@@ -4,6 +4,8 @@ const { PORT = 1337 } = process.env
 
 const app = new Koa()
 
+app.use(require('./routes/users').routes())
+
 const server = app.listen(PORT)
 
 module.exports = server

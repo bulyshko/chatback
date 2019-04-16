@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "koa": "2.7.0",
+    "koa-router": "7.4.0",
     "ws": "6.2.1"
   },
   "devDependencies": {
