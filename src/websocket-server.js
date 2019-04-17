@@ -1,6 +1,7 @@
 const WebSocket = require('ws')
 const jwt = require('jsonwebtoken')
 const url = require('url')
+const uuid = require('uuid')
 const { isUsernameTaken, takeUsername, releaseUsername } = require('./db')
 const logger = require('./utils/logger')('websocket server')
 
@@ -71,7 +72,7 @@ module.exports = server => {
       client.seen = Date.now()
 
       logger.log('info', `${username} sent message.`)
-      wss.broadcast({ type: 'user', text: JSON.parse(message), username, timestamp: Date.now() })
+      wss.broadcast({ type: 'user', text: JSON.parse(message), username, timestamp: Date.now(), id: uuid() })
     })
 
     client.on('close', code => {
