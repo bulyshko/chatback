@@ -50,6 +50,7 @@ module.exports = server => {
   }, 1000)
 
   wss.broadcast = data => {
+    data.key = uuid()
     logger.log('debug', `Broadcast: ${JSON.stringify(data)}`)
     wss.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
@@ -72,7 +73,7 @@ module.exports = server => {
       client.seen = Date.now()
 
       logger.log('info', `${username} sent message.`)
-      wss.broadcast({ type: 'user', text: JSON.parse(message), username, timestamp: Date.now(), id: uuid() })
+      wss.broadcast({ type: 'user', text: JSON.parse(message), username, timestamp: Date.now() })
     })
 
     client.on('close', code => {
