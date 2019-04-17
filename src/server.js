@@ -18,6 +18,7 @@ app.use(require('./middlewares/api'))
 
 app.on('error', ({ message }) => console.error(message))
 
+app.use(require('./routes/index').routes())
 app.use(require('./routes/users').routes())
 
 const server = app.listen(PORT, () => {
