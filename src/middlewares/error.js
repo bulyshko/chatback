@@ -1,25 +1,7 @@
 const { STATUS_CODES } = require('http')
 
-function notValid (value) {
-  return !value || !value.includes('application/vnd.api+json')
-}
-
 module.exports = async (context, next) => {
   try {
-    // all requests must include the JSON:API media type in their Accept header
-    if (notValid(context.headers['accept'])) {
-      context.throw(406)
-    }
-
-    // POST, PUT and PATCH requests must have valid Content-Type header
-    if (/^(POST|PUT|PATCH)$/.test(context.method) && notValid(context.headers['content-type'])) {
-      context.throw(415)
-    }
-
-    // we must patch Content-Type otherwise context.is('json') will return false
-    // and koa-body middleware will not handle json request
-    context.headers['content-type'] = 'application/json'
-
     await next()
 
     // response.status is set to 404 by default
@@ -48,8 +30,4 @@ module.exports = async (context, next) => {
       ]
     }
   }
-
-  // set correct media type
-  // https://github.com/koajs/koa/issues/1120
-  context.type = 'application/vnd.api+json'
 }

@@ -14,7 +14,7 @@ const app = new Koa()
 app.use(favicon(`${__dirname}/favicon.ico`))
 app.use(cors({ origin: ORIGIN }))
 app.use(require('./middlewares/ssl'))
-app.use(require('./middlewares/api'))
+app.use(require('./middlewares/error'))
 
 app.on('error', ({ message }) => console.error(message))
 
