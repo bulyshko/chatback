@@ -17,19 +17,19 @@
   "license": "MIT",
   "dependencies": {
     "@koa/cors": "3.0.0",
-    "ajv": "6.10.0",
+    "ajv": "6.10.2",
     "jsonwebtoken": "8.5.1",
     "koa": "2.7.0",
-    "koa-body": "4.1.0",
+    "koa-body": "4.1.1",
     "koa-favicon": "2.0.1",
     "koa-router": "7.4.0",
     "uuid": "3.3.2",
     "winston": "3.2.1",
-    "ws": "6.2.1"
+    "ws": "7.1.2"
   },
   "devDependencies": {
-    "dotenv": "7.0.0",
-    "nodemon": "1.18.11",
-    "standard": "12.0.1"
+    "dotenv": "8.0.0",
+    "nodemon": "1.19.1",
+    "standard": "13.1.0"
   }
 }
